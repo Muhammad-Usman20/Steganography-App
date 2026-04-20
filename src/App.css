@@ -308,3 +308,13 @@ textarea[readonly] {
     max-height: 250px;
   }
 }
+
+canvas {
+  margin-bottom: 15px;
+}
+
+.tagline{
+  color: rgb(13, 233, 241);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}

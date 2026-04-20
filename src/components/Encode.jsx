@@ -1,32 +1,55 @@
 import React, { useRef, useState } from "react";
 import { encodeMessage } from "../utils/stego";
+import emailjs from "@emailjs/browser";
 
 export default function Encode() {
     const canvasRef = useRef();
+
+
+    const originalCanvasRef = useRef(null);
+    const encodedCanvasRef = useRef(null);
+
+
+
     const [image, setImage] = useState(null);
     const [message, setMessage] = useState("");
     // Add this along with your other useState
     const [imageLoaded, setImageLoaded] = useState(false);
+    // const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
+   
+    // New Handle Image
     const handleImage = (e) => {
         const file = e.target.files[0];
+        if (!file) return;
+
         const img = new Image();
+        img.src = URL.createObjectURL(file);
 
         img.onload = () => {
-            const canvas = canvasRef.current;
-            const ctx = canvas.getContext("2d");
+            // ORIGINAL CANVAS
+            const originalCanvas = originalCanvasRef.current;
+            const ctx1 = originalCanvas.getContext("2d");
 
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
+            originalCanvas.width = img.width;
+            originalCanvas.height = img.height;
+            ctx1.drawImage(img, 0, 0);
 
-            setImageLoaded(true); // ✅ mark image as loaded
+            // ALSO DRAW SAME IMAGE IN ENCODED CANVAS
+            const encodedCanvas = encodedCanvasRef.current;
+            const ctx2 = encodedCanvas.getContext("2d");
+
+            encodedCanvas.width = img.width;
+            encodedCanvas.height = img.height;
+            ctx2.drawImage(img, 0, 0);
+
+            setImageLoaded(true);
         };
-
-        img.src = URL.createObjectURL(file);
-        setImage(img);
     };
 
+
+    // New Handle Encode
     const handleEncode = () => {
         if (!imageLoaded) {
             alert("Upload an image first!");
@@ -34,18 +57,32 @@ export default function Encode() {
         }
 
         if (!message) {
-            alert("Enter a message!");
+            alert("Please enter a message!");
             return;
         }
 
-        const canvas = canvasRef.current;
+        // Password Required
+        if (!password) {
+            alert("Please enter a password before encoding!");
+            return;
+        }
+
+        const canvas = encodedCanvasRef.current;
         const ctx = canvas.getContext("2d");
 
         let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        let newData = encodeMessage(imageData, message);
+        // let newData = encodeMessage(imageData, message);
+
+        let fullMessage = password + "|" + message + "###END###";
+
+        let newData = encodeMessage(imageData, fullMessage);
 
         ctx.putImageData(newData, 0, 0);
-        alert("Message encoded!");
+
+        // 🔥 Compare pixels
+        comparePixels(originalCanvasRef.current, encodedCanvasRef.current);
+
+        alert("Message encoded! Check console for pixel differences.");
     };
 
     const downloadImage = () => {
@@ -54,13 +91,39 @@ export default function Encode() {
             return;
         }
 
-        const canvas = canvasRef.current;
+        const canvas = encodedCanvasRef.current;
         const link = document.createElement("a");
 
         link.download = "encoded.png";
         link.href = canvas.toDataURL();
+        // PNG = lossless → large size
+        // JPG = compressed → small size
         link.click();
     };
+
+    // Extra Work for Practice
+
+    function comparePixels(originalCanvas, encodedCanvas) {
+        const ctx1 = originalCanvas.getContext("2d");
+        const ctx2 = encodedCanvas.getContext("2d");
+
+        const data1 = ctx1.getImageData(0, 0, originalCanvas.width, originalCanvas.height).data;
+        const data2 = ctx2.getImageData(0, 0, encodedCanvas.width, encodedCanvas.height).data;
+
+        let differences = [];
+
+        for (let i = 0; i < 50; i++) {
+            if (data1[i] !== data2[i]) {
+                differences.push({
+                    index: i,
+                    original: data1[i],
+                    encoded: data2[i]
+                });
+            }
+        }
+
+        console.log("Pixel Differences:", differences);
+    }
 
     return (
         <div className="card">
@@ -79,14 +142,32 @@ export default function Encode() {
                 onChange={(e) => setMessage(e.target.value)}
             />
 
-            {/* <button onClick={handleEncode}>Encode</button>
-            <button onClick={downloadImage}>Download</button> */}
-
+            <input
+                type="password"
+                placeholder="Enter password"
+                onChange={(e) => setPassword(e.target.value)}
+            />
 
             <button onClick={handleEncode} disabled={!imageLoaded}>Encode</button>
             <button onClick={downloadImage} disabled={!imageLoaded}>Download</button>
 
-            <canvas ref={canvasRef}></canvas>
+            {/* <canvas ref={canvasRef}></canvas> */}
+
+            <p>Original Image</p>
+            <canvas ref={originalCanvasRef}></canvas>
+
+            <p>Encoded Image</p>
+            <canvas ref={encodedCanvasRef}></canvas>
+
+
+
+            {/* <button onClick={() => {
+                localStorage.removeItem("isLoggedIn");
+                window.location.href = "/login";
+            }}>
+                Logout
+            </button> */}
         </div>
+
     );
 }

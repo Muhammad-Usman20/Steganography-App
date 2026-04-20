@@ -8,8 +8,9 @@ function App() {
   const [tab, setTab] = useState("encode");
 
   return (
-    <div className="app">
-      <h1>Steganography App</h1>
+    <div className="app pixel-bg">
+      <h1>⭐ PixelCipher</h1>
+      <h3 className="tagline">Hide Secrets Inside Every Pixel</h3>
       <Navbar setTab={setTab} />
 
       {tab === "encode" ? <Encode /> : <Decode />}
@@ -18,3 +19,5 @@ function App() {
 }
 
 export default App;
+
+
