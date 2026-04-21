@@ -1,16 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+
+
+
+* {
+  box-sizing: border-box;
+}
+
 /* --- GENERAL STYLES --- */
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
-  color: #f8fafc;
+
+  /* 🔥 LIGHT ANIMATED BACKGROUND */
+  background: linear-gradient(-45deg, #e0f2fe, #f0f9ff, #e9d5ff, #fef9c3);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+  padding: 6px;
+
+
+  color: #1e293b;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 20px;
+  /* padding: 20px;  */
 }
 
 /* --- MAIN APP CONTAINER --- */
@@ -18,13 +32,18 @@ body {
   width: 100%;
   max-width: 600px;
   text-align: center;
+
+  width: 100%;
+  max-width: 100%;
+  padding: 0 10px;
+  /* balanced spacing */
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 20px;
-  color: #22c55e;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+  color: #2563eb;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
   animation: fadeIn 1s ease;
 }
 
@@ -54,16 +73,20 @@ h1 {
 
 /* --- CARD STYLES --- */
 .card {
-  background: #1e293b;
+  background: #ffffff;
   padding: 25px;
   border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   animation: slideUp 0.6s ease;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  /* center properly */
 }
 
 .card h2 {
   margin-bottom: 15px;
-  color: #facc15;
+  color: #9333ea;
 }
 
 /* --- INPUT AND TEXTAREA --- */
@@ -73,7 +96,7 @@ textarea {
   margin: 10px 0;
   padding: 12px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #cbd5f5;
   outline: none;
   font-size: 1rem;
   transition: all 0.2s ease;
@@ -81,7 +104,7 @@ textarea {
 
 input[type="file"]:hover,
 textarea:hover {
-  box-shadow: 0 0 10px rgba(96, 165, 250, 0.5);
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
 }
 
 input,
@@ -91,10 +114,9 @@ textarea {
   margin: 10px 0;
   padding: 12px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #cbd5f5;
   outline: none;
   font-size: 1rem;
-  transition: all 0.2s ease;
 }
 
 textarea {
@@ -102,6 +124,7 @@ textarea {
   resize: vertical;
 }
 
+/* --- FILE INPUT --- */
 .file-input-wrapper {
   position: relative;
   overflow: hidden;
@@ -156,7 +179,6 @@ button:hover:enabled {
 button:disabled {
   background: #94a3b8;
   cursor: not-allowed;
-  transform: none;
 }
 
 /* --- CANVAS --- */
@@ -166,18 +188,17 @@ canvas {
   max-height: 400px;
   border-radius: 12px;
   border: 2px solid #3b82f6;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* --- HIDDEN MESSAGE --- */
 textarea[readonly] {
-  background: #0f172a;
-  color: #f8fafc;
-  border: 2px dashed #facc15;
-  min-height: 80px;
+  background: #f8fafc;
+  color: #1e293b;
+  border: 2px dashed #9333ea;
 }
 
-/* --- MOBILE RESPONSIVE 600px --- */
+/* --- MOBILE RESPONSIVE --- */
 @media (max-width: 600px) {
   .card {
     width: 95%;
@@ -194,15 +215,10 @@ textarea[readonly] {
   }
 }
 
-/* --- MOBILE RESPONSIVE 300px --- */
-@media (max-width: 300px) {
-  body {
-    padding: 10px;
-  }
-
+/* --- SMALL MOBILE --- */
+@media (max-width: 400px) {
   h1 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
+    font-size: 1.3rem;
   }
 
   .navbar {
@@ -210,18 +226,11 @@ textarea[readonly] {
   }
 
   .navbar button {
-    padding: 6px 10px;
-    margin: 3px 0;
     font-size: 0.8rem;
   }
 
   .card {
     padding: 15px;
-    border-radius: 15px;
-  }
-
-  .card h2 {
-    font-size: 1rem;
   }
 
   input,
@@ -262,59 +271,83 @@ textarea[readonly] {
   }
 }
 
+/* 🔥 BACKGROUND ANIMATION */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
 
+  50% {
+    background-position: 100% 50%;
+  }
 
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
+/* --- TAGLINE --- */
+.tagline {
+  color: #2563eb;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
 
-/* --- MOBILE RESPONSIVE 400px --- */
-@media (max-width: 400px) {
+body,
+html {
+  overflow-x: hidden;
+}
+
+@media (max-width: 300px) {
   body {
-    padding: 10px;
+    padding: 5px;
   }
 
-  h1 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-  }
-
-  .navbar {
-    flex-direction: column;
-  }
-
-  .navbar button {
-    padding: 6px 10px;
-    margin: 3px 0;
-    font-size: 0.8rem;
+  .app {
+    padding: 0 5px;
   }
 
   .card {
-    padding: 15px;
-    border-radius: 15px;
-  }
-
-  .card h2 {
-    font-size: 1rem;
+    width: 100%;
+    margin: 0 auto;
   }
 
   input,
   textarea,
-  .file-input-label,
-  button {
-    font-size: 0.8rem;
-    padding: 8px 10px;
-  }
-
-  canvas {
-    max-height: 250px;
+  button,
+  .file-input-label {
+    width: 100%;
   }
 }
 
-canvas {
-  margin-bottom: 15px;
+
+.auth-card {
+  animation: fadeIn 0.5s ease;
 }
 
-.tagline{
-  color: rgb(13, 233, 241);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
+
+
+
+
+
+.gender-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.gender-buttons button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  background: #e2e8f0;
+  color: #1e293b;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.gender-buttons button:hover {
+  background: #3b82f6;
+  color: white;
 }

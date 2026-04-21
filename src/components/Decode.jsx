@@ -57,26 +57,6 @@ export default function Decode() {
         setMessage(hiddenMessage);
     };
 
-    // return (
-    //     <div className="card">
-    //         <h2>Decode Message</h2>
-
-    //         {/* <input type="file" onChange={handleImage} /> */}
-
-    //         <div className="file-input-wrapper">
-    //             <label className="file-input-label">
-    //                 Upload Image
-    //                 <input type="file" onChange={handleImage} />
-    //             </label>
-    //         </div>
-
-    //         <p><b>Hidden Message:</b></p>
-    //         {/* <textarea value={message} readOnly /> */}
-    //         <textarea value={message} readOnly placeholder="Decoded message will appear here" />
-
-    //         <canvas ref={canvasRef}></canvas>
-    //     </div>
-    // );
 
     return (
         <div className="card">
@@ -103,16 +83,6 @@ export default function Decode() {
             <textarea value={message} readOnly />
 
             <canvas ref={canvasRef}></canvas>
-
-
-
-            {/* <button onClick={() => {
-                localStorage.removeItem("isLoggedIn");
-                window.location.href = "/login";
-            }}>
-                Logout
-            </button> */}
-
 
         </div>
     );
