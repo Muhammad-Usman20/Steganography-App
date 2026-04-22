@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { encodeMessage } from "../utils/stego";
 import emailjs from "@emailjs/browser";
+import { auth, db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function Encode() {
     const canvasRef = useRef();
@@ -18,7 +20,7 @@ export default function Encode() {
     // const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-   
+
     // New Handle Image
     const handleImage = (e) => {
         const file = e.target.files[0];
@@ -50,7 +52,7 @@ export default function Encode() {
 
 
     // New Handle Encode
-    const handleEncode = () => {
+    const handleEncode = async () => {
         if (!imageLoaded) {
             alert("Upload an image first!");
             return;
@@ -83,6 +85,30 @@ export default function Encode() {
         comparePixels(originalCanvasRef.current, encodedCanvasRef.current);
 
         alert("Message encoded! Check console for pixel differences.");
+
+
+
+
+
+        // with firebase
+        const user = auth.currentUser;
+
+        if (user) {
+            try {
+                await addDoc(collection(db, "encodedImages"), {
+                    userId: user.uid,
+                    email: user.email,
+                    message: message,
+                    createdAt: new Date().toISOString()
+                });
+
+                console.log("Data saved in Firebase");
+            } catch (err) {
+                console.error("Error saving data:", err);
+            }
+        }
+
+
     };
 
     const downloadImage = () => {
