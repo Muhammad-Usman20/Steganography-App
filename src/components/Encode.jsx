@@ -19,6 +19,7 @@ export default function Encode() {
     const [imageLoaded, setImageLoaded] = useState(false);
     // const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [isEncoded, setIsEncoded] = useState(false);
 
 
     // New Handle Image
@@ -87,7 +88,8 @@ export default function Encode() {
         alert("Message encoded! Check console for pixel differences.");
 
 
-
+        // for whatsapp button disable
+        setIsEncoded(true);
 
 
         // with firebase
@@ -110,6 +112,19 @@ export default function Encode() {
 
 
     };
+
+    // Whatsapp Share feature
+    const shareOnWhatsApp = () => {
+        const message =
+            "This image contains a hidden secret message encoded using steganography. Please attach the downloaded encoded image manually and send it via WhatsApp.";
+
+        const whatsappURL =
+            `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+        window.open(whatsappURL, "_blank");
+    };
+
+
 
     const downloadImage = () => {
         if (!imageLoaded) {
@@ -175,6 +190,25 @@ export default function Encode() {
             />
 
             <button onClick={handleEncode} disabled={!imageLoaded}>Encode</button>
+
+
+
+            <button
+                onClick={shareOnWhatsApp}
+                disabled={
+                    !imageLoaded ||
+                    !message ||
+                    !password ||
+                    !isEncoded
+                }
+            >
+                {isEncoded
+                    ? "Share on WhatsApp"
+                    : "Encode First "}
+            </button>
+
+
+
             <button onClick={downloadImage} disabled={!imageLoaded}>Download</button>
 
             {/* <canvas ref={canvasRef}></canvas> */}
